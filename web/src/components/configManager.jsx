@@ -1,6 +1,6 @@
 import React from 'react';
 import './configManager.css'
-import { FetchData } from "../resources/data-provider";
+import { FetchPost } from "../resources/data-provider";
 import { CalculateTimeDifference } from "../resources/utility";
 import { Button, ButtonDropdown, StatusIndicator, Link, Box, TextFilter, SpaceBetween, Tabs, Header, Modal, Cards, ColumnLayout, Spinner, Table } from '@cloudscape-design/components';
 import ConfigDetail from './configDetail';

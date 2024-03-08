@@ -1,5 +1,7 @@
 # AWS AI Content Moderation Live Stream PoC-in-a-box
 
+> :warning: The repository has been updated to incorporate the Amazon Rekognition moderation V7 taxonomy by March 7th, 2024. Please note that you may encounter compatibility issues before your account is migrated to V7.
+
 With the increased usage of live streaming, the need for effective content moderation becomes even more crucial. User generated content (UGC) presents complex challenges for safety. Many companies rely on human moderators to monitor the video streams, which is time-consuming, error-prone, and doesn't scale with business growth speed. An automated moderation solution supporting human-in-the-loop (HITL) is increasingly needed.
 
 This solution is designed to assist live stream customers using AWS IVS or other solutions in quickly setting up a proof of concept (PoC) for visual moderation with Amazon Rekognition. You can deploy this solution into your AWS account using the CDK package.

@@ -1,6 +1,6 @@
 import React from 'react';
 import './activeStreams.css'
-import { FetchData } from "../resources/data-provider";
+import { FetchPost } from "../resources/data-provider";
 import { CalculateTimeDifference } from "../resources/utility";
 import { Button, Badge, StatusIndicator, Link, Box, TextFilter, SpaceBetween, Pagination, Header, Modal, Cards, ColumnLayout, Spinner, Icon } from '@cloudscape-design/components';
 import StreamDetail from './streamDetail';
@@ -49,7 +49,7 @@ class ActiveStreams extends React.Component {
     
     populateItems() {
         this.setState({status: "loading"});
-        FetchData("/monitoring/streams", "post", {})
+        FetchPost("/monitoring/streams", {})
             .then((data) => {
                 var resp = data.body;
                 if (data.statusCode !== 200) {
@@ -144,7 +144,7 @@ class ActiveStreams extends React.Component {
           "channel_arn": this.state.selectedItems[0].stream.channel_arn,
           "action": action
         };
-          FetchData("/monitoring/acknowledge/", "post", payload)
+          FetchPost("/monitoring/acknowledge/", payload)
           .then((data) => {
               var resp = data.body;
               if (data.statusCode !== 200) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import './channels.css'
-import { FetchData } from "../resources/data-provider";
+import { FetchPost } from "../resources/data-provider";
 import { CalculateTimeDifference } from "../resources/utility";
 import { Button, Badge, StatusIndicator, Link, Box, TextFilter, SpaceBetween, Pagination, Header, Modal, Cards, ColumnLayout, Spinner, ExpandableSection } from '@cloudscape-design/components';
 import StreamDetail from './streamDetail';
@@ -45,7 +45,7 @@ class Channels extends React.Component {
 
     populateItems() {
         this.setState({status: "loading"});
-        FetchData("/monitoring/channels", "post", {"include_stream": true, "include_thumbnail": false, "include_config": true})
+        FetchPost("/monitoring/channels", {"include_stream": true, "include_thumbnail": false, "include_config": true})
             .then((data) => {
                 var resp = data.body;
                 if (data.statusCode !== 200) {
@@ -121,7 +121,7 @@ class Channels extends React.Component {
     handleDeleteRule = e => {
       this.setState({status: "loading"});
       console.log(this.state.selectedItems);
-      FetchData("/rules-engine/config-delete", "post", {"channel_ids": this.state.selectedItems.map(c => c.id)})
+      FetchPost("/rules-engine/config-delete", {"channel_ids": this.state.selectedItems.map(c => c.id)})
           .then((data) => {
               var resp = data.body;
               if (data.statusCode !== 200) {

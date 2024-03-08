@@ -1,51 +1,118 @@
-import { Auth, API } from 'aws-amplify';
+import { fetchAuthSession } from 'aws-amplify/auth';
+import { post, get, put } from 'aws-amplify/api';
 
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
-const API_KEY = process.env.REACT_APP_GENAI_DEMO_SERVICE_API_KEY;
+async function FetchPost(path, reqbody=null, apiName='PolicyEvalService') {
+  var request = await ContructRequest(path, reqbody, apiName);
+  const restOperation =  await post(request);
+  const { body, statusCode } = await restOperation.response;
+  return await body.json();
+}
 
+async function FetchPut(path, reqbody=null, apiName='PolicyEvalService') {
+  var request = await ContructRequest(path, reqbody, apiName);
+  const restOperation =  await put(request);
+  const { body, statusCode } = await restOperation.response;
+  return await body.json();
+}
 
-/*
-export default class DataProvider {
-  getData(name) {
-    return fetch(`../resources/${name}.json`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Response error: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => data.map(it => ({ ...it, date: new Date(it.date) })));
-  }
-}*/
+async function FetchGet(path, reqbody=null, apiName='PolicyEvalService') {
+  var request = await ContructRequest(path, reqbody, apiName);
+  const restOperation =  await get(request);
+  const { body, statusCode } = await restOperation.response;
+  return await body.json();
+}
 
-
-async function FetchData(path, method="post", body=null, apiName='CmLiveStreamWebService') {
-  const init = {
-    headers: {
-      Authorization: `Bearer ${(await Auth.currentSession())
-        .getIdToken()
-        .getJwtToken()}`,
-      "x-api-key": API_KEY
+async function ContructRequest(path, reqbody, apiName) {
+  return {
+    apiName: apiName,
+    path: path,
+    options: {
+      body: reqbody,
+      headers: {
+        Authorization: (await fetchAuthSession()).tokens?.idToken?.toString(),
+        "x-api-key": process.env.REACT_APP_APIGATEWAY_API_KEY
+      },
+      queryParams: null
     }
-  };
-
-  if (body !== null) {
-    init["body"] = body;
   }
-
-  switch(method.toLowerCase()) {
-    case "get":
-      return await API.get(apiName, path, init);
-    case "post":
-      return await API.post(apiName, path, init);
-    case "put":
-      return await API.put(apiName, path, init);
-  }
-  return null;
 }
 
 const ModerationCategories = [
+  {
+      name: "Explicit",
+      items: [
+          {name: "Explicit Nudity"},
+          {name: "Explicit Sexual Activity"},
+          {name: "Sex Toys"},
+          {name: "Sexual Activity"},
+          {name: "Illustrated Explicit Nudity"},
+          {name: "Adult Toys"}
+      ],
+  },
+  {
+    name: "Non-Explicit Nudity of Intimate parts and Kissing",
+    items: [
+        {name: "Non-Explicit Nudity"},
+        {name: "Obstructed Intimate Parts"},
+        {name: "Kissing on the Lips"}
+    ],
+  },
+  {
+    name: "Swimwear or Underwear",
+    items: [
+        {name: "Female Swimwear or Underwear"},
+        {name: "Male Swimwear or Underwear"},
+    ],
+  },
+  {
+    name: "Violence",
+    items: [
+        {name: "Weapons"},
+        {name: "Graphic Violence"},
+    ],
+  },
+  {
+    name: "Visually Disturbing",
+    items: [
+        {name: "Death and Emaciation"},
+        {name: "Crashes"},
+    ],
+  },
+  {
+    name: "Drugs & Tobacco",
+    items: [
+        {name: "Products"},
+        {name: "Drugs & Tobacco Paraphernalia & Use"},
+    ],
+  },
+  {
+    name: "Alcohol",
+    items: [
+        {name: "Alcohol Use"},
+        {name: "Alcoholic Beverages"},
+    ],
+  },
+  {
+    name: "Rude Gestures",
+    items: [
+        {name: "Middle Finger"},
+    ],
+  },
+  {
+    name: "Gambling",
+    items: [],
+  },
+  {
+    name: "Hate Symbols",
+    items: [
+        {name: "Nazi Party"},
+        {name: "White Supremacy"},
+        {name: "Extremist"},
+    ],
+  },
+]
+
+const ModerationCategoriesV61 = [
   {
       name: "Explicit Nudity",
       items: [
@@ -132,4 +199,4 @@ const ModerationCategories = [
     ]
   }
 ]
-export {FetchData, ModerationCategories};
+export {FetchPost, FetchPut, FetchGet, ModerationCategories};

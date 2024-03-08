@@ -1,11 +1,10 @@
 import React from 'react';
 import './configDetail.css'
 import './dropdowntree.css'
-import { FetchData, ModerationCategories } from "../resources/data-provider";
+import { FetchPost, ModerationCategories } from "../resources/data-provider";
 import { Button, FormField, Input, ButtonDropdown, Box, SpaceBetween, Alert, Header, Modal, TokenGroup, ColumnLayout, Autosuggest, Table, Container, Checkbox, Textarea, ExpandableSection } from '@cloudscape-design/components';
 import { v4 as uuidv4 } from 'uuid';
 import Slider from '@mui/material/Slider';
-import DropdownTreeSelect from 'react-dropdown-tree-select';
 
 class ConfigDetail extends React.Component {
 
@@ -189,7 +188,7 @@ class ConfigDetail extends React.Component {
         || invalidConfig.invalidImageRules) return;
 
       this.setState({status: "loading"});
-      FetchData("/rules-engine/config-upsert", "post", {"config":config})
+      FetchPost("/rules-engine/config-upsert", {"config":config})
           .then((data) => {
               var resp = data.body;
               if (data.statusCode !== 200) {
@@ -445,7 +444,6 @@ class ConfigDetail extends React.Component {
                                     description="If you leave the sub-category empty, the rule will apply to all categories under the top category."
                                     stretch={true}
                                 >
-                                {/* <DropdownTreeSelect data={this.state.moderationCategories} className='mdl-demo' onChange={this.handelDropdownTreeSelect} /> */}
                                 <TokenGroup 
                                   onDismiss={({ detail: { itemIndex } }) => {
                                     console.log(this.state.currentCategories);
