@@ -413,7 +413,7 @@ class ConfigDetail extends React.Component {
                             <ColumnLayout columns={2}>
                                 <FormField
                                     label="Rule Name"
-                                    description="A name to describe the rule. For example, Nudity with 70% threshold"
+                                    description="A name to describe the rule. For example, Explicit with 70% threshold"
                                     stretch={true}
                                 >
                                 <Input autoFocus
